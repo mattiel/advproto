@@ -17,20 +17,121 @@
   <div class="container mx-auto px-4 md:max-w-screen-md">
     <section class="w-screen py-6 bg-gray-50 relative left-1/2 right-1/2 mb-4 pt-24" style="margin-left: -50vw; margin-right: -50vw;">
       <div class="container mx-auto px-4 md:max-w-screen-md">
-        <h2 class="text-2xl text-gray-900 font-bold">Week 1</h2>
+        <h2 class="text-2xl text-gray-900 font-bold">Project 1</h2>
         <span class="text-md text-gray-600">May 18, 2021</span>
       </div>
     </section>
     <section class="mt-6">
       <h2 class="font-semibold text-gray-800 mb-2 text-lg">An Essential Ecosystem For Growing An Apple Tree 🍎</h2>
       <p class="text-gray-700 mb-4">
+        I chose this ecosystem because it's very natural and seems very obvious to prototype. 
+        I wanted to be able to build a natural ecosystem that users can watch peacefully and let it grow.
         In order to have an apple tree grow in an environment, I thought of 3 essential objects that affect the tree: 
         <strong class="underline font-semibold text-blue-600">sun, sky, and cloud.</strong> 
         These objects have certain functions so that apple tree will either grow or die and produce apples. As shown in a diagram below.
       </p>
       <p class="text-gray-700 mb-4"></p>
+
       <img class="rounded-xl" src="../../assets/week-1-1.png">
       <figcaption class="w-full text-center text-xs text-gray-500 my-2">UML Diagram</figcaption>
+
+      <h2 class="font-semibold text-gray-800 mb-2 text-lg">Translating Idea Into Code</h2>
+      <p class="text-gray-700 mb-4">
+        In order to have an essential environment for a tree, it would also need environmental changes where it would 
+        rain on certain occasions and have it's own time so that sun can rise and set.  
+      </p>
+
+      <section class="my-24">
+        <h4 class="font-semibold text-blue-600 mb-2">Challenges</h4>
+        <h2 class="font-bold text-3xl mb-6">Challenges encountered while developing the idea</h2>
+        <img class="rounded-xl" src="../../assets/tree-sunny.png">
+        <p class="text-gray-700">
+          
+        </p>
+  
+        <div class="grid grid-cols-2 gap-6 items-start">
+          <div class="grid gap-3">
+            <h3 class="font-semibold text-gray-800">Interactivity</h3>
+            <p class="text-gray-700">
+              I originally thought to have naturally growing environment for a tree to grow,
+              but there was no interaction. There needed to be ways for users to be more engaged with the prototype.
+            </p>
+          </div>
+  
+          <div class="grid gap-3">
+            <h3 class="font-semibold text-gray-800">Growing the tree</h3>
+            <p class="text-gray-700">
+              In the code, itw as difficult to find right timing for the enviornment to start raining and how to keep track of
+              the environment so that the tree would grow depending on how much sunlight and water it receives.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="my-24">
+        <h4 class="font-semibold text-blue-600 mb-2">Solutions</h4>
+        <h2 class="font-bold text-3xl mb-6">Dependencies on user input and the environment</h2>
+        <img class="rounded-xl" src="../../assets/tree-rain.png">
+        <p class="text-gray-700">
+          
+        </p>
+  
+        <div class="grid grid-cols-2 gap-6 items-start">
+          <div class="grid gap-3 grid-flow-row-dense">
+            <h3 class="font-semibold text-gray-800">User input to create clouds</h3>
+            <p class="text-gray-700">
+              Since it would be unrealistic for users to be able to change time, it was more natural for users to create clouds if
+              the users want it to rain, so that the user can simply click on the screen and probability of raining will increase as
+              numbers of clouds adds up on the screen.
+            </p>
+          </div>
+  
+          <div class="grid gap-3">
+            <h3 class="font-semibold text-gray-800">Randomly generated clouds</h3>
+            <p class="text-gray-700">
+              While clouds are able to be generated from clicking the screen, it's also generated randomly every 1/30 of the seconds.
+              It's not implemented yet, but the goal is that the user will have enough balance of precipitation so that the tree won't
+              die.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="my-24">
+        <h4 class="font-semibold text-blue-600 mb-2">Next Steps</h4>
+        <h2 class="font-bold text-3xl mb-6">Death of a tree</h2>
+        <img class="rounded-xl" src="../../assets/tree-death.png">
+        <p class="text-gray-700">
+          
+        </p>
+  
+        <div class="grid grid-cols-2 gap-6 items-start">
+          <div class="grid gap-3 grid-flow-row-dense">
+            <h3 class="font-semibold text-gray-800">Probability of raining</h3>
+            <p class="text-gray-700">
+              Right now, it will rain when there are 20 clouds shown on the screen. However, that means that the users can keep clicking 
+              on the screen whenever they want it to rain. It would be more interesting to have the chance of rain to increase as the number of clouds increase.
+            </p>
+          </div>
+  
+          <div class="grid gap-3">
+            <h3 class="font-semibold text-gray-800">Death of a tree</h3>
+            <p class="text-gray-700">
+              Sun rises and sets, and it's only hidden when it rains. Right now, the user has to make the environment rain so that the tree will grow.
+              However, users will be more engaged in making the rain happen with probabilities, and having them to realize that having too much of water
+              will eventually kill the tree. If this is implemented, the users have to make decisions on when create clouds.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- - Why did you decide to work on this topic, what's your interest there?
+      - How did you envision your system in the beginning and how did that vision change?
+      - At least one image of your diagram.
+      - How did you translate your diagram into code?
+      - How did you deal with the complexity in your system?
+      - How did you decide on the interactive elements?
+      - What would be some paths for future development of the project? -->
     </section>
   </div>
 </body>
