@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/styles/github.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/highlight.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      hljs.initHighlightingOnLoad();
+      hljs.highlightAll();
+    });
+  </script>
+  <link href="../../tailwind.css" rel="stylesheet">
+</head>
+<body>
+  <nav class="w-full fixed top-0 left-0 px-4 h-12 flex items-center border-b border-gray-200 bg-white z-10">
+    <div class="container md:max-w-screen-md mx-auto px-4">
+      <h1 class="font-bold text-xl my-4 text-gray-900">
+        <a href="../../index.html">Advanced Interactive Prototyping</a>
+      </h1>
+    </div>
+  </nav>
+  <div class="container mx-auto px-4 md:max-w-screen-md">
+    <section class="w-screen py-6 bg-gray-50 relative left-1/2 right-1/2 mb-4 pt-24" style="margin-left: -50vw; margin-right: -50vw;">
+      <div class="container mx-auto px-4 md:max-w-screen-md">
+        <h2 class="text-2xl text-gray-900 font-bold">Project 2</h2>
+        <span class="text-md text-gray-600">July 16, 2021</span>
+      </div>
+    </section>
+    <section class="mt-6">
+      <h2 class="font-semibold text-gray-800 mb-2 text-3xl">Spaceship game to destroy asteroids 🚀</h2>
+      <p class="text-gray-700 mb-4">
+        I chose to work on a spaceship game to explore ways for users to play a game with a controller.
+        The game is a simple: the player controls a spaceship and must destroy the asteroids to survive.
+        I wanted to figure out how a player would control the spaceship and be able to shoot and destroy asteroids without problems.
+      </p>
+
+      <section class="my-24">
+        <h4 class="font-semibold text-blue-600 mb-2">Sensors</h4>
+        <h2 class="font-bold text-3xl mb-6">Defining controllers</h2>
+        <img class="rounded-xl" src="">
+  
+        <div class="grid grid-cols-1 gap-8 items-start">
+          <div class="grid gap-3">
+            <h3 class="font-semibold text-gray-800">Early development</h3>
+            <p class="text-gray-700">
+              I originally thought of using a joystick, a button, and a rotary encoder to control the ship.
+              Later though, I realized that rotary encoder did not provide enough precision for the ship to rotate, 
+              which later I switched rotary encoder out with a potentiometer and removed a button because joystick already provided a push button.
+            </p>
+          </div>
+
+          <div class="grid gap-3">
+            <h3 class="font-semibold text-gray-800">Physical implementations</h3>
+            <p class="text-gray-700">
+              For the joystick, I first thought of making it as a source to move forward and backward into the direction the ship was facing.
+              However, the mental model of the player would be that joystick would allow the ship move in the direction it's leaning towards.
+              Which later, I used combination of X, Y positions of the joystick to move the ship fluidly around the canvas. There is one communication schema
+              that made the spaceship to shoot like it's shooting a shot gun because the sensor would return button down for a fraction of second.
+            </p>
+          </div>
+
+          <div class="grid gap-3">
+            <h3 class="font-semibold text-gray-800">Controller shape</h3>
+            <p class="text-gray-700">
+              The controller is simplified version of regular gaming controllers like PS4, XBOX, and others. However, with potentiometer on the left to rotate a ship,
+              and a joystick with a press-down button for movement and shooting.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="my-24">
+        <h4 class="font-semibold text-blue-600 mb-2">Build Process</h4>
+        <h2 class="font-bold text-3xl mb-6">Building the game and the controller</h2>
+        <img class="rounded-xl" src="">
+  
+        <div class="grid grid-cols-1 gap-8 items-start">
+          <div class="grid gap-3">
+            <h3 class="font-semibold text-gray-800">Listening from the serial event</h3>
+            <pre class="max-h-96 overflow-y-auto">
+<code class="language-c bg-gray-50 rounded-2xl">void serialEvent(Serial p) {
+  String event = p.readString();
+  String results[] = split(event, "+");
+  if(results.length == 4) {
+    joystickX = map(float(results[1]), 0, 1023, -2, 2);
+    joystickY = map(float(results[0]), 0, 1023, -2, 2);
+    potentR = float(results[2]);
+    buttonDown = float(results[3]);
+    println(buttonDown);
+    if(buttonDown == 0) {
+      ship.shoot(); 
+    }
+    if(buttonDown == 0 && isGameOver) {
+        isGameOver = false; 
+    }
+    ship.angle = map(potentR, 0, 1023, 0, 360);
+    ship.move(joystickX, joystickY);
+  }
+}</code>
+          </pre>
+            <p class="text-gray-700">
+              I originally thought of using a joystick, a button, and a rotary encoder to control the ship.
+              Later though, I realized that rotary encoder did not provide enough precision for the ship to rotate, 
+              which later I switched rotary encoder out with a potentiometer and removed a button because joystick already provided a push button.
+            </p>
+          </div>
+
+          <div class="grid gap-3">
+            <h3 class="font-semibold text-gray-800">Missle implementations</h3>
+            <pre class="max-h-96 overflow-y-auto">
+<code class="language-c bg-gray-50 rounded-2xl">void handleMissle() {
+  if(ship.missles.size() > 0) {
+    ArrayList<Missle> toRemove = new ArrayList<Missle>();
+    for(Missle missle: ship.missles) {
+      if(missle.location.x > width || missle.location.x < 0 
+      || missle.location.y > height || missle.location.y < 0) {
+        toRemove.add(missle);
+      }
+      missle.render(); 
+      for(Asteroid asteroid: asteroids) {
+        if (dist(missle.location.x, missle.location.y, 
+            asteroid.location.x, asteroid.location.y) 
+            < missle.radius + asteroid.radius) {
+          asteroid.reset();
+        }
+      }
+    }
+    ship.missles.removeAll(toRemove);
+  }
+}</code>
+          </pre>
+          </div>
+
+          <div class="grid gap-3">
+            <h3 class="font-semibold text-gray-800">Asteroids</h3>
+            <pre class="max-h-96 overflow-y-auto">
+<code class="language-c bg-gray-50 rounded-2xl">void handleAsteroids() {
+  for(Asteroid asteroid: asteroids) {
+    if(asteroid.location.x > width + 50 || asteroid.location.x < -50 
+    || asteroid.location.y > height + 50|| asteroid.location.y < -50)
+      asteroid.reset();
+      
+    if (dist(ship.location.x, ship.location.y, 
+        asteroid.location.x, asteroid.location.y) 
+        < ship.w / 2 + asteroid.radius) {
+     isGameOver = true;
+   }
+  }
+
+  for(Asteroid asteroid: asteroids) {
+    asteroid.render();
+  }
+}</code>
+            </pre>
+            <p class="text-gray-700">
+              Asteroids are created at random edges of the canvas, and they are given random angle and speed to move straight 
+              into the direction they are facing. Asteroids' positions are "reset" and not destroyed from the ArrayList if the 
+              position collides with the edge of the canvas or the ship. Interesting thing to note here is that the distance 
+              between the ship and the asteroid is calculated to precisely calculate the collision because the asteroid is circular.
+            </p>
+          </div>
+
+          <div class="grid gap-3">
+            <h3 class="font-semibold text-gray-800">Ship</h3>
+            <pre class="max-h-96 overflow-y-auto">
+<code class="language-c bg-gray-50 rounded-2xl">class Ship {
+  float angle;
+  int w, h;
+  float speed;
+  PVector location;
+  
+  ArrayList<Missle> missles = new ArrayList<Missle>();
+  
+  Ship() {
+    this.angle = 0;
+    this.speed = 3;
+    this.location = new PVector(width/2, height/2);
+    this.w = 64;
+    this.h = 64;
+  }
+  
+  void render() {
+    pushMatrix();
+    translate(location.x, location.y);
+    rotate(radians(angle));
+    fill(255, 0, 0);
+    rect(-32, -36, w, h);
+    
+    fill(0);
+    circle(0, -24, 8);
+    
+    popMatrix();
+  }
+  
+  void move(float x, float y) {
+    location.x += x;
+    constrain(location.x, 64, width - 64);
+    location.y -= y;
+    constrain(location.y, 64, height - 64);
+  }
+  
+  void shoot() {
+    missles.add(new Missle(location.copy(), ship.angle)); 
+  }
+  
+  float getAngle() {
+    return angle; 
+  }
+}</code>
+            </pre>
+            <p class="text-gray-700">
+              The controller is simplified version of regular gaming controllers like PS4, XBOX, and others. However, with potentiometer on the left to rotate a ship,
+              and a joystick with a press-down button for movement and shooting.
+            </p>
+          </div>
+        </div>
+      </section>
+
+
+
+
+      <!--
+        - How did you envision your controller in the beginning and how did that vision change?
+        - How did the physical peculiarities of the sensors influence your interaction?
+        - How did the communication schema influence your interaction?
+        - How did you settle on the physical shape of your controllers?
+        - Describe the details of the build process, including pictures, videos and code.
+        - What would be some paths for future development of the project? 
+      -->
+    </section>
+  </div>
+</body>
+</html>
