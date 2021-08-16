@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/styles/github.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/highlight.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      hljs.initHighlightingOnLoad();
+      hljs.highlightAll();
+    });
+  </script>
+  <link href="../../tailwind.css" rel="stylesheet">
+</head>
+<body>
+  <nav class="w-full fixed top-0 left-0 px-4 h-12 flex items-center border-b border-gray-200 bg-white z-10">
+    <div class="container md:max-w-screen-md mx-auto px-4">
+      <h1 class="font-bold text-xl my-4 text-gray-900">
+        <a href="../../index.html">Advanced Interactive Prototyping</a>
+      </h1>
+    </div>
+  </nav>
+  <div class="container mx-auto px-4 md:max-w-screen-md">
+    <section class="w-screen py-6 bg-gray-50 relative left-1/2 right-1/2 mb-4 pt-24" style="margin-left: -50vw; margin-right: -50vw;">
+      <div class="container mx-auto px-4 md:max-w-screen-md">
+        <h2 class="text-2xl text-gray-900 font-bold">Project 4</h2>
+        <span class="text-md text-gray-600">Oct 14, 2021</span>
+      </div>
+    </section>
+    <section class="mt-6">
+      <section class="my-32">
+        <h2 class="font-semibold text-gray-800 mb-6 text-4xl max-w-lg">Studio Apartment Temperature and Humidity Visualization 🌡</h2>
+      </section>
+      <section class="my-32">
+        <h2 class="font-bold text-2xl mb-4 leading-loose">Context</h2>
+        <p class="text-gray-700 mb-10">
+          When looking at the sensor kits, temperature and humidity sensor caught my attention. I wanted an interesting way to visualize the room temperature
+          data to represent how the room might feel under certain temperature and humidity. This is a continuation of the previous project, where I created a blob
+          to visualize temperature and humidity separately.
+        </p>
+      </section>
+
+      <section class="my-32">
+        <h2 class="font-bold text-2xl mb-4">General concept</h2>
+        <p class="text-gray-700 mb-10">
+          The idea is to create multiples of particles to represent the data of the temperature and humidity sensor. The particles will move around the canvas
+          in a more calm way if the temperature is below a certain threshold, and will move faster if it's hotter. Humidity also affects the speed and directions
+          of the particles and lastly, the colors represent the temperature of the room. The more red the color, the higher the temperature, lower temperature will represent
+          something more blue.
+        </p>
+      </section>
+
+      <section class="my-32">
+        <h2 class="font-bold text-2xl mb-4">Impetus</h2>
+        <p class="text-gray-700 mb-10">
+          I wanted to touch points on visualizing certain data, because I have never done an live prototype of certain data. 
+          This is a good opportunity to explore how the data could be visualized with coding with live movements. 
+          I also wanted to challange myself to visualize same data in the same canvas.
+        </p>
+      </section>
+      
+      <section class="my-32">
+        <h2 class="font-bold text-3xl mb-4">Goals</h2>
+        <p class="text-gray-700 mb-10">
+          Povide a user to somehow sense the room temperature and humidity by looking at a visual data
+          instead of looking at the actual numbers.
+        </p>
+      </section>
+  
+
+      <section class="my-24">
+        <h4 class="font-semibold text-blue-600 mb-2">Precendents</h4>
+        
+        <div class="grid grid-cols-1 gap-8 items-start">
+          <div class="grid gap-3">
+            <h3 class="font-semibold text-gray-800">Interface development</h3>
+            <img class="rounded-xl" src="../../assets/temp-proto-1.png">
+            <figcaption class="text-gray-500 italic text-center text-sm">Main screen with selection of temperature, humidity and third sensor</figcaption>
+            <img class="rounded-xl" src="../../assets/temp-proto-2.png">
+            <figcaption class="text-gray-500 italic text-center text-sm">Example of the temperature view and latest 24 data</figcaption>
+            <p class="text-gray-700">
+              I originally thought of visualizing the temperature and humidity by clicking on multiple circles that demonstrated current and average
+              humidity and temperature of the room. However, after consulting with the instructor, I realized that the circular representation of temperature, humidity,
+              and the third sensor had no correlation between them. Also, graph of temperature and humidity was too obvious, so I decided to explore ways to creatively
+              represent the data.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="my-24">
+        <h4 class="font-semibold text-blue-600 mb-2">Development</h4>
+        <h2 class="font-bold text-3xl mb-6">Connecting Huzzah with Adafruit IO and Visualization</h2>
+        <img class="rounded-xl" src="">
+  
+        <div class="grid grid-cols-1 gap-8 items-start">
+          <div class="grid gap-3">
+            <h3 class="font-semibold text-gray-800">Using Adafruit Huzzah</h3>
+            <p class="text-gray-700">
+              The module I got to use for the sensor was to DHT11. I downloaded DHT library from Arduino IDE and tried out two examples.
+              I went with a simpler example because all I needed was to send temperature and humidity data to Adafruit IO.
+            </p>
+            <pre class="max-h-96 overflow-y-auto">
+<code class="language-c bg-gray-50 rounded-2xl">float h = dht.readHumidity();
+float f = dht.readTemperature(true);
+
+// codes ...
+
+ioTemperature->save(f);
+ioHumidity->save(h);
+</code></pre>
+            <p class="text-gray-700">
+              All I did here is to read humidity and read temperature in farenheit and save it to Adafruit IO.
+            </p>
+          </div>
+
+          <div class="grid gap-3">
+            <h3 class="font-semibold text-gray-800">Fetching Data with React Hooks</h3>
+            <pre class="max-h-96 overflow-y-auto">
+<code class="language-js bg-gray-50 rounded-2xl">function useInterval(callback, delay) {
+  const savedCallback = useRef()
+  useEffect(() => {
+    savedCallback.current = callback
+  }, [callback])
+
+  useEffect(() => {
+    function tick() {
+      savedCallback.current()
+    }
+
+    if(delay !== null) {
+      let id = setInterval(tick, delay);
+      return () => clearInterval(id);
+    }
+  }, [delay]);
+}</code></pre>
+            <p class="text-gray-700">
+              To retrieve data in real-time, I needed to set an interval I used React Hooks. Therefore, 
+              I created a function that takes a callback and a delay. 
+              I then used <span class="italic text-purple-600 font-semibold">useInterval()</span> to retrieve data by using the following code.
+            </p>
+            <pre class="max-h-96 overflow-y-auto">
+              <code class="javascript-c bg-gray-50 rounded-2xl">useInterval(() => {
+  fetch(`https://io.adafruit.com/api/v2/mattiel/feeds/${focus}/data?limit=24`)
+    .then(response => response.json())
+    .then((data) => {
+      setData(data);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}, delay)</code></pre>
+            <p class="text-gray-700">
+              Using asynchronous function to rectrieve data was necessary because React would throw and error if there was no data avaialble.
+              Using the <span class="italic text-purple-600 font-semibold">useInterval()</span>, I was able to fetch data every 6 seconds.
+              I also used template literals to fetch data based on the state <span class="italic text-purple-600 font-semibold">focus</span>,
+              which I will explain on my decision on coming up with focus.
+            </p>
+          </div>
+
+          <div class="grid gap-3">
+            <h3 class="font-semibold text-gray-800">Visualization of data</h3>
+            <img class="rounded-xl" src="../../assets/temp-vis-1.png">
+            <figcaption class="text-gray-500 italic text-center text-sm">Desired integration of temperature visualization</figcaption>
+            <img class="rounded-xl" src="../../assets/temp-vis-2.png">
+            <figcaption class="text-gray-500 italic text-center text-sm">Desired integration of humidity visualization</figcaption>
+            <p class="text-gray-700">
+              I wanted to visualize temperature with a blob, with changing color based on temperature. For humidity I also wanted to
+              show waves of particles in the background to show how humid the room is.
+            </p>
+          </div>
+          <div class="grid gap-3">
+            <h3 class="font-semibold text-gray-800">Problems Encountered</h3>
+            <p class="text-gray-700">
+              There were several problems encountered when trying to implement the desired functionality.
+              First, using React to use p5.js was not straightforward, so I had to use Library to make it easier.
+            </p>
+            <p class="text-gray-700">
+
+            </p>
+          </div>
+
+          <div class="grid gap-3">
+            <h3 class="font-semibold text-gray-800">Implementing P5.js with React</h3>
+            <p class="text-gray-700">
+              Using <a class="underline text-blue-600 hover:text-blue-700 hover:no-underline" href="https://github.com/Gherciu/react-p5">react-p5</a>, I was able to use P5 with React.
+              There were caveats where I have to put <span class="italic text-purple-600 font-semibold">p5.</span> in front of every p5 functions and constants.
+            </p>
+            <pre class="max-h-96 overflow-y-auto">
+<code class="language-js bg-gray-50 rounded-2xl">import React from "react";
+import Sketch from "react-p5";
+let x = 50;
+let y = 50;
+export default (props) => {
+  const setup = (p5, canvasParentRef) => {
+    // use parent to render the canvas in this ref
+    // (without that p5 will render the canvas outside of your component)
+    p5.createCanvas(500, 500).parent(canvasParentRef);
+  };
+
+  const draw = (p5) => {
+    p5.background(0);
+    p5.ellipse(x, y, 70, 70);
+    // NOTE: Do not use setState in the draw function or in functions that are executed
+    // in the draw function...
+    // please use normal variables or class properties for these purposes
+    x++;
+  };
+
+  return &lt;Sketch setup={setup} draw={draw} /&gt;;
+}</code></pre>
+          </div>
+
+          <div class="grid gap-3">
+            <h3 class="font-semibold text-gray-800">Understanding reference from Open Processing</h3>
+            <p class="text-gray-700">
+              I first had to translate the code into React P5 compatible code. 
+              And connect the latest data point to represent the temperature of the room.<br/>
+              <a class="underline text-blue-600 hover:text-blue-700 hover:no-underline" href="https://openprocessing.org/sketch/838545">Reference</a>
+            </p>
+            <pre class="max-h-96 overflow-y-auto">
+<code class="language-js bg-gray-50 rounded-2xl">import React from "react";
+import Sketch from "react-p5";
+
+let kMax; // maximal value for the parameter "k" of the blobs
+let step = 0.01; // difference in time between two consecutive blobs
+let n = 100; // total number of blobs
+let radius = 0; // radius of the base circle
+let inter = 0.05; // difference of base radii of two consecutive blobs
+let maxNoise = 500; // maximal value for the parameter "noisiness" for the blobs
+  
+  const Canvas = ({temperature, humidity}) => {
+    const setup = (p5, canvasParentRef) => {
+      // use parent to render the canvas in this ref
+      // (without that p5 will render the canvas outside of your component)
+      p5.createCanvas(p5.windowWidth, p5.windowHeight).parent(canvasParentRef);
+      p5.colorMode(p5.HSB, 1);
+      p5.angleMode(p5.DEGREES);
+      kMax = p5.random(0.6, 1.0);
+      p5.noFill();
+      p5.noStroke();
+    };
+  
+    const draw = (p5) => {
+      p5.background(0, 0, 0, 1);
+  
+      const blob = (size, xCenter, yCenter, k, t, noisiness) => {
+        p5.beginShape();
+        let angleStep = 360 / 10;
+        for (let theta = 0; theta <= 360 + 2 * angleStep; theta += angleStep) {
+          let r1, r2;
+          r1 = p5.cos(theta)+1;
+          r2 = p5.sin(theta)+1; // +1 because it has to be positive for the function noise
+          let r = size + p5.noise(k * r1,  k * r2, t) * noisiness;
+          let x = xCenter + r * p5.cos(theta);
+          let y = yCenter + r * p5.sin(theta);
+          p5.curveVertex(x, y);
+        }
+        p5.endShape();
+      }
+      if(temperature !== 0) {
+        let t = p5.frameCount/100;
+        for (let i = n; i > 0; i--) {
+          let alpha = 1 - (i / n);
+          let h = alpha / 5 + p5.map(temperature, 122, 32, 0, 0.75);
+          // h = alpha / 5 + .75
+          p5.fill(h % 1, 1, 1, alpha);
+          let size = radius + i * inter;
+          let k = kMax * p5.sqrt(i/n);
+          let noisiness = maxNoise * (i / n);
+          blob(size, p5.width/2, p5.height/2, k, t - i * step, noisiness);
+        }
+      }
+    };
+  
+    const windowResized = (p5) => {
+      p5.resizeCanvas(p5.windowWidth, p5.windowHeight);
+    }
+  
+    return (
+      &lt;Sketch 
+        setup={setup} 
+        draw={draw} 
+        windowResized={windowResized} 
+        temperature={temperature}
+      /&gt;
+    )
+  };
+  
+export default Canvas;</code></pre>
+            <p class="text-gray-700">
+              From this code, notice I mapped out the colors based on the temperature as an input.
+                <pre class="inline"><code class="language-js bg-gray-50 rounded-2xl">let h = alpha / 5 + p5.map(temperature, 122, 32, 0, 0.75);</code></pre>
+              to change colors. Temperature closer to 32 will be blue, and 122 will be red.
+            </p>
+            <img class="rounded-xl object-center" src="../../assets/temp-cold.png">
+            <figcaption class="text-gray-500 italic text-center text-sm">Representation of cold temperature</figcaption>
+            <img class="rounded-xl object-center" src="../../assets/temp-hot.png">
+            <figcaption class="text-gray-500 italic text-center text-sm">Representation of hot temperature</figcaption>
+          </div>
+
+          <div class="grid gap-3">
+            <h3 class="font-semibold text-gray-800">Attempt to translate humidity visualization</h3>
+            <p class="text-gray-700">
+              For visualizing the humidity, I tried to use the same approach as temperature.
+              The code was written in Java, I had to take some time to translate it into React P5 compatible code.
+              <a class="underline text-blue-600 hover:text-blue-700 hover:no-underline" href="https://openprocessing.org/sketch/1051516">Reference</a>
+            </p>
+            <pre class="max-h-96 overflow-y-auto">
+    <code class="language-js bg-gray-50 rounded-2xl">import React from "react";
+import Sketch from "react-p5";
+
+let particles = [];
+let humidityAlpha;
+      
+const Humidity = ({ humidity }) => {
+  const setup = (p5, canvasParentRef) => {
+    p5.createCanvas(360, 360).parent(canvasParentRef);
+    class Particle {
+      constructor(xIn, yIn, cIn) {
+        this.posX = xIn;
+        this.posY = yIn;
+        this.c = cIn;
+        this.incr = 0;
+        this.theta = 0;
+      }
+    }
+
+    const setParticles = () => {
+      for(let i = 0; i < 6000; i++) {
+        const x = p5.random(p5.width);
+        const y = p5.random(p5.height);
+        // const adj = map(y, 0, height, 255, 0);
+        const c = p5.color(255, 255, 255, 100);
+        particles[i] = new Particle(x, y, c);
+      }
+    }
+    p5.background(0);
+    p5.noStroke();
+    setParticles();
+  };
+
+  const draw = (p5) => {
+    p5.frameRate(80);
+    humidityAlpha = p5.map(humidity, 0, 100, 5, 35);
+    humidityAlpha = p5.map(p5.mouseX, 0, p5.width, 5, 35);
+    p5.fill(0, humidityAlpha);
+    p5.rect(0, 0, p5.width, p5.height);
+    p5.loadPixels();
+    particles.forEach(p => {
+      // p.render();
+      p.incr += .008
+      p.theta = p5.noise(p.posX * .006, p.posY * .004, p.incr) * p5.TWO_PI
+      p.posX += 2 * p5.cos(p.theta)
+      p.posY += 2 * p5.sin(p.theta)
+      if (p.posX > 0 && p.posX < p5.width && p.posY > 0  && p.posY < p5.height) {
+        p5.pixels[parseInt(p.posX) + parseInt(p.posY) * p5.width] = p.c
+      }
+      if (p.posX < 0) 
+        p.posX = p5.width
+      if (p.posX > p5.width)
+        p.posX = 0
+      if (p.posY < 0)
+        p.posY = p5.height
+      if (p.posY > p5.height)
+        p.posY = 0
+    })
+
+    p5.updatePixels();
+  };
+
+  const windowResized = (p5) => {
+    p5.resizeCanvas(p5.windowWidth, p5.windowHeight);
+  }
+
+  return (
+    &lt;Sketch 
+      setup={setup} 
+      draw={draw} 
+      windowResized={windowResized} 
+      humidity={humidity}
+      className=&quot;absolute right-8 bottom-8 border border-gray-800 z-10&quot;
+    /&gt;
+  )
+};
+export default Humidity;</code></pre>
+            <p class="text-gray-700">
+              While translation of code seems to have no problem, 
+              After many attempts, I couldn't make it work well with the temperature visualization.
+            </p>
+          </div>
+
+          <div class="grid gap-3">
+            <h3 class="font-semibold text-gray-800">Mid-point product</h3>
+            <p class="text-gray-700">
+              For project 3, I have just integrated the same visualization with the humidity too.
+            </p>
+            <video class="w-full" width="960" height="680" controls>
+              <source src="../../assets/temp-vid.mov" type="video/mp4">
+            </video>
+          </div>
+
+          <div class="grid gap-3">
+            <h3 class="font-semibold text-gray-800">Temperature and humidity in one canvas</h3>
+            <p class="text-gray-700">
+              A blob doesn't seem to be effective at showing two data points, and it definitely fails at respresenting humidity, 
+              becuase the movement is random, and the color is only dependant on the temperature data. I've got to look over the
+              open processing code for particle moveement and make it work.
+            </p>
+            <pre class="max-h-96 overflow-y-auto">
+    <code class="language-js bg-gray-50 rounded-2xl">display() {
+  for (let i = 0; i < d; i++) {
+    for (let j = 0; j < d; j++) {
+      // loop over
+      let index = 4 * ((parseInt(this.y) * d + j) * p5.width * d + (parseInt(this.x) * d + i));
+      p5.pixels[index] = p5.red(this.clr);
+      p5.pixels[index + 1] = p5.green(this.clr);
+      p5.pixels[index + 2] = p5.blue(this.clr);
+      p5.pixels[index + 3] = p5.alpha(this.clr);
+    }
+  }
+}</code></pre>
+            <p class="text-gray-700">
+              Previously, during the translation of the Java processing code into Javascript, I missed point on how pixels are handled differently.
+              In order to set the colors correctly, I had to iterate over R, G, B, and A array and set the colors.
+            </p>
+          </div>
+
+          <div class="grid gap-3">
+            <h3 class="font-semibold text-gray-800">Data dependencies</h3>
+            <pre class="max-h-96 overflow-y-auto">
+<code class="language-js bg-gray-50 rounded-2xl">update() {
+  this.incr += .008
+  this.theta = p5.noise(this.x * p5.map(temperature, 70, 80, 0.001, 0.002), this.y * p5.map(humidity, 50, 70, 0.001, 0.002), this.incr) * p5.TWO_PI;
+  this.x += p5.map(temperature, 70, 80, .5, 3) * p5.cos(this.theta);
+  this.y += p5.map(humidity, 50, 70, .5, 3) * p5.sin(this.theta);
+}</code></pre>
+            <p class="text-gray-700">
+              To change the movement of the particles, theta and x and y positions are directly dependant on the temperature and humidity and these are mapped to the lowest and
+              highest temperature and humidity values get in my room.
+            </p>
+
+            <pre class="max-h-96 overflow-y-auto">
+<code class="language-js bg-gray-50 rounded-2xl">particles = [];
+for (let i = 0; i < 6000; i++) {
+  let x = p5.random(p5.width);
+  let y = p5.random(p5.height);
+  let adj = p5.map(y, 0, p5.height, 255, 0);
+  let c = p5.color(40, adj, 255);
+  c = p5.color(p5.map(temperature, 70, 80, 210, 0), 100, 100);
+  particles.push(new Particle(x, y, c));
+}</code></pre>
+              <p class="text-gray-700">
+                When particles are intiially created, the colors are set based on the temperature. 
+                The lower the temperature, the more blue the color, the higher the temperature, the more red the color will be.
+              </p>
+          </div>
+
+          <div class="grid gap-3">
+            <h3 class="font-semibold text-gray-800">Final product</h3>
+            <p class="text-gray-700">
+              For now, I have just integrated the same visualization with the humidity too.
+            </p>
+            <video class="w-full" width="960" height="680" autoplay loop>
+              <source src="../../assets/temp-low.mov" type="video/mp4">
+            </video>
+            <figcaption class="text-gray-500 italic text-center text-sm mb-4">
+              When temperature and humidity are low (70F & 50%)
+            </figcaption>
+
+            <video class="w-full" width="960" height="680" autoplay loop>
+              <source src="../../assets/temp-mid.mov" type="video/mp4">
+            </video>
+            <figcaption class="text-gray-500 italic text-center text-sm mb-4">
+              When temperature and humidity are temperature (75F & 55%)
+            </figcaption>
+
+            <video class="w-full" width="960" height="680" autoplay loop>
+              <source src="../../assets/temp-high.mov" type="video/mp4">
+            </video>
+            <figcaption class="text-gray-500 italic text-center text-sm mb-4">
+              When temperature and humidity are high (80F & 60%)
+            </figcaption>
+          </div>
+
+          <div class="grid gap-3">
+            <h3 class="font-semibold text-gray-800">Next steps</h3>
+            <p class="text-gray-700">
+              If the visualization has been run for maybe more than a minute, particles will start to form a line and movements suddenly become boring.
+              I want to be able to fix the problem in that so that the movement is consistant and smooth, without time being a factor.
+            </p>
+
+            <div class="flex w-full justify-center mt-4">
+              <a class="inline-flex px-6 py-4 text-blue-700 shadow-md hover:shadow-lg rounded-xl transition transition-shadow" href="../../assets/home-proto.zip" download>
+                Download Source Code
+                <svg class="ml-2 w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="my-24">
+        <div class="flex justify-between">
+          <a class="cursor-pointer text-left" href="three.html">
+            <h4 class="font-semibold text-2xl">Project 3</h4>
+            ← Previous
+          </a>
+          <!-- <a class="cursor-pointer text-right">
+            <h4 class="font-semibold text-2xl">Project 2</h4>
+            Next →
+          </a> -->
+        </div>
+      </section>
+
+
+      <!--
+        - How did you envision your controller in the beginning and how did that vision change?
+        - How did the physical peculiarities of the sensors influence your interaction?
+        - How did the communication schema influence your interaction?
+        - How did you settle on the physical shape of your controllers?
+        - Describe the details of the build process, including pictures, videos and code.
+        - What would be some paths for future development of the project? 
+      -->
+    </section>
+  </div>
+</body>
+</html>
