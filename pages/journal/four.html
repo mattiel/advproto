@@ -15,13 +15,36 @@
   </script>
   <link href="../../tailwind.css" rel="stylesheet">
 </head>
-<body>
-  <nav class="w-full fixed top-0 left-0 px-4 h-12 flex items-center border-b border-gray-200 bg-white z-10">
-    <div class="container md:max-w-screen-md mx-auto px-4">
-      <h1 class="font-bold text-xl my-4 text-gray-900">
-        <a href="../../index.html">Advanced Interactive Prototyping</a>
+<body class="overflow-x-hidden bg-gray-100">
+  <nav class="w-full fixed top-0 left-0 px-4 h-16 flex items-center border-b border-gray-200 bg-white z-10">
+    <div class="py-8 flex items-center justify-between w-full">
+            <h1 class="font-bold text-xl my-4 text-gray-900">
+        <a href="/index.html">Advanced Interactive Prototyping</a>
       </h1>
+      <ul class="flex space-x-4">
+        <li>
+          <a class="text-gray-500 hover:text-gray-800 hover:bg-gray-100 hover:font-semi-bold leading-loose px-4 py-2 rounded-xl" href="/pages/journal/one.html">
+            Project 1
+          </a>
+        </li>
+        <li>
+          <a class="text-gray-500 hover:text-gray-800 hover:bg-gray-100 hover:font-semi-bold leading-loose px-4 py-2 rounded-xl" href="/pages/journal/two.html">
+            Project 2
+          </a>
+        </li>
+        <li>
+          <a class="text-gray-500 hover:text-gray-800 hover:bg-gray-100 hover:font-semi-bold leading-loose px-4 py-2 rounded-xl" href="/pages/journal/three.html">
+            Project 3
+          </a>
+        </li>
+        <li>
+          <a class="text-gray-500 hover:text-gray-800 hover:bg-gray-100 hover:font-semi-bold leading-loose px-4 py-2 rounded-xl" href="/pages/journal/four.html">
+            Project 4
+          </a>
+        </li>
+      </ul>
     </div>
+  </nav>
   </nav>
   <div class="container mx-auto px-4 md:max-w-screen-md">
     <section class="w-screen py-6 bg-gray-50 relative left-1/2 right-1/2 mb-4 pt-24" style="margin-left: -50vw; margin-right: -50vw;">
@@ -53,7 +76,7 @@
         </p>
       </section>
 
-      <section class="my-32">
+      <!-- <section class="my-32">
         <h2 class="font-bold text-2xl mb-4">Impetus</h2>
         <p class="text-gray-700 mb-10">
           I wanted to touch points on visualizing certain data, because I have never done an live prototype of certain data. 
@@ -61,12 +84,13 @@
           I also wanted to challange myself to visualize same data in the same canvas.
         </p>
       </section>
-      
+       -->
       <section class="my-32">
         <h2 class="font-bold text-3xl mb-4">Goals</h2>
         <p class="text-gray-700 mb-10">
-          Povide a user to somehow sense the room temperature and humidity by looking at a visual data
-          instead of looking at the actual numbers.
+          Instead of looking at the actual numbers, I wanted to explore ways to visually represent the status of the room.
+          I was inspired how humidity is based on the water molecules floating around the air. It would be a good way to visualize the status of the room
+          by using the particles, and change colors and movements to represent different parts of data.
         </p>
       </section>
   
@@ -464,23 +488,30 @@ for (let i = 0; i < 6000; i++) {
             <p class="text-gray-700">
               For now, I have just integrated the same visualization with the humidity too.
             </p>
-            <video class="w-full" width="960" height="680" autoplay loop>
-              <source src="../../assets/temp-low.mov" type="video/mp4">
-            </video>
+            <div class="w-full relative overflow-hidden rounded-xl" style="height: 480px">
+              <video class="absolute top-0 left-0" style="max-width: unset" width="960" height="680" autoplay controls loop>
+                <source src="../../assets/temp-low.mov" type="video/mp4">
+              </video>
+            </div>
+
             <figcaption class="text-gray-500 italic text-center text-sm mb-4">
               When temperature and humidity are low (70F & 50%)
             </figcaption>
 
-            <video class="w-full" width="960" height="680" autoplay loop>
-              <source src="../../assets/temp-mid.mov" type="video/mp4">
-            </video>
+            <div class="w-full relative overflow-hidden rounded-xl" style="height: 480px">
+              <video class="absolute top-0 left-0" style="max-width: unset" width="960" height="680" autoplay controls loop>
+                <source src="../../assets/temp-mid.mov" type="video/mp4">
+              </video>
+            </div>
             <figcaption class="text-gray-500 italic text-center text-sm mb-4">
               When temperature and humidity are temperature (75F & 55%)
             </figcaption>
 
-            <video class="w-full" width="960" height="680" autoplay loop>
-              <source src="../../assets/temp-high.mov" type="video/mp4">
-            </video>
+            <div class="w-full relative overflow-hidden rounded-xl" style="height: 480px">
+              <video class="absolute top-0 left-0" style="max-width: unset" width="960" height="680" autoplay controls loop>
+                <source src="../../assets/temp-high.mov" type="video/mp4">
+              </video>
+            </div>
             <figcaption class="text-gray-500 italic text-center text-sm mb-4">
               When temperature and humidity are high (80F & 60%)
             </figcaption>

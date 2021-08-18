@@ -4,14 +4,45 @@
   <meta charset="UTF-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet"
+    href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/styles/github.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/highlight.min.js"></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    hljs.initHighlightingOnLoad();
+    hljs.highlightAll();
+  });
+  </script>
   <link href="../../tailwind.css" rel="stylesheet">
 </head>
-<body>
-  <nav class="w-full fixed top-0 left-0 px-4 h-12 flex items-center border-b border-gray-200 bg-white z-10">
-    <div class="container md:max-w-screen-md mx-auto px-4">
-      <h1 class="font-bold text-xl my-4 text-gray-900">
-        <a href="../../index.html">Advanced Interactive Prototyping</a>
+<body class="overflow-x-hidden bg-gray-100">
+  <nav class="w-full fixed top-0 left-0 px-4 h-16 flex items-center border-b border-gray-200 bg-white z-10">
+    <div class="py-8 flex items-center justify-between w-full">
+      <h1 class="font-bold text-xl my-4 text-gray-900 cursor-pointer">
+        <a href="/index.html">Advanced Interactive Prototyping</a>
       </h1>
+      <ul class="flex space-x-4">
+        <li>
+          <a class="text-gray-500 hover:text-gray-800 hover:bg-gray-100 hover:font-semi-bold leading-loose px-4 py-2 rounded-xl" href="/pages/journal/one.html">
+            Project 1
+          </a>
+        </li>
+        <li>
+          <a class="text-gray-500 hover:text-gray-800 hover:bg-gray-100 hover:font-semi-bold leading-loose px-4 py-2 rounded-xl" href="/pages/journal/two.html">
+            Project 2
+          </a>
+        </li>
+        <li>
+          <a class="text-gray-500 hover:text-gray-800 hover:bg-gray-100 hover:font-semi-bold leading-loose px-4 py-2 rounded-xl" href="/pages/journal/three.html">
+            Project 3
+          </a>
+        </li>
+        <li>
+          <a class="text-gray-500 hover:text-gray-800 hover:bg-gray-100 hover:font-semi-bold leading-loose px-4 py-2 rounded-xl" href="/pages/journal/four.html">
+            Project 4
+          </a>
+        </li>
+      </ul>
     </div>
   </nav>
   <div class="container mx-auto px-4 md:max-w-screen-md">
@@ -45,10 +76,6 @@
         <h4 class="font-semibold text-blue-600 mb-2">Challenges</h4>
         <h2 class="font-bold text-3xl mb-6">Challenges encountered while developing the idea</h2>
         <img class="rounded-xl" src="../../assets/tree-sunny.png">
-        <p class="text-gray-700">
-          
-        </p>
-  
         <div class="grid grid-cols-2 gap-6 items-start">
           <div class="grid gap-3">
             <h3 class="font-semibold text-gray-800">Interactivity</h3>
@@ -66,6 +93,30 @@
             </p>
           </div>
         </div>
+
+        <h3 class="font-semibold text-gray-800 mb-4">Timer using frames</h3>
+        <pre class="max-h-96 overflow-y-auto">
+<code class="language-java bg-gray-50 rounded-2xl">void updateTime() {
+  if (rate >= 1) {
+    rate = 0;
+    minutes += 1;
+  } else {
+    rate++;
+  }
+  if (minutes == 60) {
+    minutes = 0;
+    hours++;
+  }
+
+  if (hours == 24) {
+    hours = 0;
+    day++;
+  }
+}</code></pre>
+        <p class="text-gray-700 mt-4 mb-12">
+          Since 30 frames are drawn in a second, I created own updateTime function to update the time every frame.
+          Therefore, every second, the prototype's in-time would be 30 minutes.
+        </p>
       </section>
 
       <section class="my-24">
@@ -98,12 +149,21 @@
       </section>
 
       <section class="my-24">
-        <h4 class="font-semibold text-blue-600 mb-2">Next Steps</h4>
+
+        <div class="grid gap-3">
+          <h3 class="font-semibold text-gray-800">Final product</h3>
+          <p class="text-gray-700">
+            The spaceship can move around, rotate and shoot missles. Once an asteroid collides with the ship, the game is over.
+          </p>
+          <video class="w-full" width="960" height="680" autoplay>
+            <source src="../../assets/tree.mov" type="video/mp4">
+          </video>
+     
+        </div>
+
+        <h4 class="font-semibold text-blue-600 mb-2 mt-24">Next Steps</h4>
         <h2 class="font-bold text-3xl mb-6">Death of a tree</h2>
         <img class="rounded-xl" src="../../assets/tree-death.png">
-        <p class="text-gray-700">
-          
-        </p>
   
         <div class="grid grid-cols-2 gap-6 items-start">
           <div class="grid gap-3 grid-flow-row-dense">
@@ -122,6 +182,13 @@
               will eventually kill the tree. If this is implemented, the users have to make decisions on when create clouds.
             </p>
           </div>
+        </div>
+
+        <div class="flex w-full justify-center mt-4">
+          <a class="inline-flex px-6 py-4 text-blue-700 shadow-md hover:shadow-lg rounded-xl transition transition-shadow" href="../../assets/project1.zip" download>
+            Download Source Code
+            <svg class="ml-2 w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+          </a>
         </div>
       </section>
 

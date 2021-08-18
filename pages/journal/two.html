@@ -15,12 +15,34 @@
   </script>
   <link href="../../tailwind.css" rel="stylesheet">
 </head>
-<body>
-  <nav class="w-full fixed top-0 left-0 px-4 h-12 flex items-center border-b border-gray-200 bg-white z-10">
-    <div class="container md:max-w-screen-md mx-auto px-4">
-      <h1 class="font-bold text-xl my-4 text-gray-900">
-        <a href="../../index.html">Advanced Interactive Prototyping</a>
+<body class="overflow-x-hidden bg-gray-100">
+  <nav class="w-full fixed top-0 left-0 px-4 h-16 flex items-center border-b border-gray-200 bg-white z-10">
+    <div class="py-8 flex items-center justify-between w-full">
+      <h1 class="font-bold text-xl my-4 text-gray-900 cursor-pointer">
+        <a href="/index.html">Advanced Interactive Prototyping</a>
       </h1>
+      <ul class="flex space-x-4">
+        <li>
+          <a class="text-gray-500 hover:text-gray-800 hover:bg-gray-100 hover:font-semi-bold leading-loose px-4 py-2 rounded-xl" href="/pages/journal/one.html">
+            Project 1
+          </a>
+        </li>
+        <li>
+          <a class="text-gray-500 hover:text-gray-800 hover:bg-gray-100 hover:font-semi-bold leading-loose px-4 py-2 rounded-xl" href="/pages/journal/two.html">
+            Project 2
+          </a>
+        </li>
+        <li>
+          <a class="text-gray-500 hover:text-gray-800 hover:bg-gray-100 hover:font-semi-bold leading-loose px-4 py-2 rounded-xl" href="/pages/journal/three.html">
+            Project 3
+          </a>
+        </li>
+        <li>
+          <a class="text-gray-500 hover:text-gray-800 hover:bg-gray-100 hover:font-semi-bold leading-loose px-4 py-2 rounded-xl" href="/pages/journal/four.html">
+            Project 4
+          </a>
+        </li>
+      </ul>
     </div>
   </nav>
   <div class="container mx-auto px-4 md:max-w-screen-md">
@@ -78,11 +100,14 @@
       <section class="my-24">
         <h4 class="font-semibold text-blue-600 mb-2">Build Process</h4>
         <h2 class="font-bold text-3xl mb-6">Building the game and the controller</h2>
-        <img class="rounded-xl" src="">
-  
         <div class="grid grid-cols-1 gap-8 items-start">
           <div class="grid gap-3">
             <h3 class="font-semibold text-gray-800">Listening from the serial event</h3>
+            <img class="rounded-xl" src="../../assets/ship-movement.jpg">
+            <figcaption class="text-gray-500 italic text-center text-sm  mb-8">
+              (left) ship only being able to move forward and backward of the angle it's facing <br/>
+              (right) ship being able to move without dependency in the angle
+            </figcaption>
             <pre class="max-h-96 overflow-y-auto">
 <code class="language-c bg-gray-50 rounded-2xl">void serialEvent(Serial p) {
   String event = p.readString();
@@ -104,14 +129,21 @@
   }
 }</code></pre>
             <p class="text-gray-700">
-              I originally thought of using a joystick, a button, and a rotary encoder to control the ship.
-              Later though, I realized that rotary encoder did not provide enough precision for the ship to rotate, 
-              which later I switched rotary encoder out with a potentiometer and removed a button because joystick already provided a push button.
+              I didnt really encounter any problems when implementing serialEvent for the controller.
+              Just had to get the sensors' data into a single line text divided by '+' sign.
+            </p>
+            <p class="text-gray-700 mb-12">
+              However, there were some complications when trying to move the ship around the canvas.
+              At first, I had the ship to move forward and backwards in the angle it was facing and this was unnatural for the users to
+              control the ship with the joystic because joystic moves 360 degrees. Therefore, I mapped X and Y positions from -2 to 2 to
+              get the direction of the joystick, and then moved the ship based on the direction of the joystick.
             </p>
           </div>
 
           <div class="grid gap-3">
             <h3 class="font-semibold text-gray-800">Missle implementations</h3>
+            <img class="rounded-xl" src="../../assets/missle-remove.jpg">
+            <figcaption class="text-gray-500 italic text-center text-sm  mb-8">How missles are removed from missles ArrayList</figcaption>
             <pre class="max-h-96 overflow-y-auto">
 <code class="language-c bg-gray-50 rounded-2xl">void handleMissle() {
   if(ship.missles.size() > 0) {
@@ -134,16 +166,20 @@
   }
 }</code></pre>
           <p class="text-gray-700">
-            Implementing a missle in the game is a bit tricky. Notice how I created a new ArrayList toMove to store references of missles
-             to be removed if it's goes out of the canvas. Since I used forEach loop, Java would throw an exception becuasee if I removed an item from
-             Array list directly when it's iterating. Therefore, when it's done iterating, it will remove items to be removed.
-
-             This function also checks if a missle collides with an asteroid. If it does, the asteroid is reset.
+            Implementing a missle in the game got a little tricky. Notice how I created a new ArrayList toMove to store references of missles
+            to be removed if it's goes out of the canvas. Since I used forEach loop, Java would throw an exception becuase I removed an item from
+            ArrayList directly when it's iterating. Therefore, I had to code it so that when it's done iterating, it will remove items to be removed.
+          </p>
+          <p class="text-gray-700">
+            This function also checks if a missle collides with an asteroid. If it does, the asteroid positions are reset to random x & y coordinates,
+            instead of being destroyed in the array and re-created.
           </p>
           </div>
 
           <div class="grid gap-3">
             <h3 class="font-semibold text-gray-800">Asteroids</h3>
+            <img class="rounded-xl" src="../../assets/collision-boundary.jpg">
+            <figcaption class="text-gray-500 italic text-center text-sm  mb-8">Circular collision detection, instead of rectangular</figcaption>
             <pre class="max-h-96 overflow-y-auto">
 <code class="language-c bg-gray-50 rounded-2xl">void handleAsteroids() {
   for(Asteroid asteroid: asteroids) {
@@ -169,8 +205,7 @@
               position collides with the edge of the canvas or the ship. 
             </p>
 
-            <img class="rounded-xl" src="../../assets/collision-boundary.jpg">
-            <figcaption class="text-gray-500 italic text-center text-sm">Circular collision detection, instead of rectangular</figcaption>
+            
             <p class="text-gray-700">
               Interesting thing to note here is that the distance 
               between the ship and the asteroid is calculated to precisely calculate the collision because the asteroid is circular.
@@ -179,6 +214,12 @@
 
           <div class="grid gap-3">
             <h3 class="font-semibold text-gray-800">Ship</h3>
+            <img class="rounded-xl" src="../../assets/ship-rotation.jpg">
+            <figcaption class="text-gray-500 italic text-center text-sm  mb-8">
+              (left) Ship shooting, 
+              (middle) missles rotating with ship's angle, 
+              (center) missles not dependant to the angle of the ship once it's shot
+            </figcaption>
             <pre class="max-h-96 overflow-y-auto">
 <code class="language-c bg-gray-50 rounded-2xl">class Ship {
   float angle;
@@ -249,16 +290,16 @@
           <div class="grid gap-3">
             <h3 class="font-semibold text-gray-800">Next steps</h3>
             <p class="text-gray-700">
-              Since I wasn't able to get the integration of humidity working, 
-              I'd like to be able to show both visualization on the same page.
+              Implementing the UI elements to show the score and status of the game and adding more fun elements such as upgrades and traps to make the game more interesting.
             </p>
 
             <div class="flex w-full justify-center mt-4">
-              <a class="inline-flex px-6 py-4 text-blue-700 shadow-md hover:shadow-lg rounded-xl transition transition-shadow" href="../../projects/home" download>
+              <a class="inline-flex px-6 py-4 text-blue-700 shadow-md hover:shadow-lg rounded-xl transition transition-shadow" href="../../assets/project2.zip" download>
                 Download Source Code
                 <svg class="ml-2 w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
               </a>
             </div>
+          </div> 
         </div>
       </section>
 
